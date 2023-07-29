@@ -54,13 +54,13 @@ class BlogController extends Controller
         $data = $request->validate([
             'title' => 'required|max:250|min:5',
             'description' => 'required',
-            'image'=>'required|image|max:2048'
+            'image'=>'required|max:2048'
         ]);
 
         try {
             if ($request->file('image')) {
-                if ($request->input('oldImage')) {
-                    Storage::delete($request->input('oldImage'));
+                if ($request->oldImage) {
+                    Storage::delete($request->oldImage);
                 }
                 $data['image'] = $request->file('image')->store('blog-images');
             }  
