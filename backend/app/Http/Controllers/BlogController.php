@@ -12,7 +12,7 @@ class BlogController extends Controller
 {
     public function index() 
     {
-        return Blog::select('id','title', 'excerpt', 'description','image')->get();
+        return Blog::select('id','title', 'excerpt', 'description','image', 'created_at')->get();
     }
 
     public function store(Request $request) 
@@ -39,7 +39,7 @@ class BlogController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json([
-                'message'=>'Something goes wrong while creating a blog'
+                'message' => 'Something goes wrong while creating a blog'
             ], 500);
         }
     }

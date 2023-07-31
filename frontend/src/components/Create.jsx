@@ -36,7 +36,7 @@ export default function Create() {
                 icon: "success",
                 text: data.message
             })
-            navigate("/")
+            navigate("/blog")
         }).catch(({response}) => {
             if (response.status === 422) {
                 setValidationError(response.data.errors)
@@ -105,7 +105,7 @@ export default function Create() {
                                         </Form.Group>
                                     </Col>
                                 </Row>
-                                <Button variant="primary" className="mt-2" size="lg" block="block" type="submit">
+                                <Button variant="primary" className="mt-2" block="block" type="submit">
                                     Save
                                 </Button>
                             </Form>

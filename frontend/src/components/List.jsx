@@ -1,14 +1,34 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import Button from "react-bootstrap/Button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 
 const List = () => {
     const [blogs, setBlogs] = useState([])
+    const [user, setUser] = useState({})
+    const token = localStorage.getItem("token")
+    const navigate = useNavigate()
+
+    const fetchData = async () => {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+        await axios.get(`http://localhost:7000/api/dashboard`).then((response) => {
+            setUser(response.data);
+        })
+    }
 
     useEffect(() => {
-        fetchBlogs()
+        if (!token) {
+            Swal.fire({
+                icon: "error",
+                text: "You must login first"
+            })
+            navigate("/login");
+        } else {
+            fetchData()
+            fetchBlogs()
+        }
     }, [])
     
     const fetchBlogs = async () => {
@@ -50,11 +70,12 @@ const List = () => {
 
     return (
         <div className="container">
+            <h3 className="d-flex justify-content-center my-3">Halo {user.name}</h3>
             <div className="row">
-                <div className="col-12">
-                    <Link className="btn btn-primary mb-3 float-end" to={"/blog/create"}>
-                        Create Blog
-                    </Link>
+                <div className="col-md-12">
+                <Link className="btn btn-primary mb-3 float-end" to={"/blog/create"}>
+                    Create Blog
+                </Link>
                 </div>
                 <div className="col-12">
                     <div className="card card-body">
